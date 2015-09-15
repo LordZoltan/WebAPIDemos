@@ -206,7 +206,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer.Abstractions\WebAPIDemos.ServiceLayer.Abstractions.csproj">
+      <Project>{b3e1bcc1-a8aa-401d-9b97-05c80d1d27e0}</Project>
+      <Name>WebAPIDemos.ServiceLayer.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer.Direct\WebAPIDemos.ServiceLayer.Direct.csproj">
+      <Project>{5cfc2e7e-dc06-44ad-9f55-bd874fd2aa08}</Project>
+      <Name>WebAPIDemos.ServiceLayer.Direct</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

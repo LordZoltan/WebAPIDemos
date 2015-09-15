@@ -45,7 +45,7 @@
     <Compile Include="IndexedList.cs" />
     <Compile Include="IntegerIndexedList.cs" />
     <Compile Include="IntegerKeyProducer.cs" />
-    <Compile Include="MyDataClass.cs" />
+    <Compile Include="MyEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

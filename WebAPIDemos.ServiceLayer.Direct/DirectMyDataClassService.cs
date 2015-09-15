@@ -4,29 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPIDemos.Data;
+using WebAPIDemos.ServiceLayer.Abstractions;
 
 namespace WebAPIDemos.ServiceLayer.Direct
 {
-    public class DirectMyDataClassService : IMyDataClassService
+    public class DirectMyDataClassService : IMyObjectService
     {
+        public Task<MyObject> GetMyObject(int id)
+        {
+            //simulating the repo pattern here - but without a using.
+            var repo = new ExampleRepo();
+            return Task.Factory.StartNew(() => repo.MyDataClasses.Fetch(id));
+        }
 
-			public Task<Data.MyDataClass> GetMyDataClass(int id)
-			{
-				//simulating the repo pattern here - but without a using.
-				var repo = new ExampleRepo();
-				return Task.Factory.StartNew(() => repo.MyDataClasses.Fetch(id));
-			}
+        public Task InsertMyDataClass(MyObject obj)
+        {
+            var repo = new ExampleRepo();
+            return Task.Factory.StartNew(() => repo.MyDataClasses.Insert(obj));
+        }
 
-			public Task InsertMyDataClass(Data.MyDataClass obj)
-			{
-				var repo = new ExampleRepo();
-				return Task.Factory.StartNew(() => repo.MyDataClasses.Insert(obj));
-			}
-
-			public Task<IQueryable<Data.MyDataClass>> All()
-			{
-				var repo = new ExampleRepo();
-				return Task.Factory.StartNew(() => repo.MyDataClasses.All());
-			}
-		}
+        public Task<IQueryable<MyObject>> All()
+        {
+            var repo = new ExampleRepo();
+            return Task.Factory.StartNew(() => repo.MyDataClasses.All());
+        }
+    }
 }

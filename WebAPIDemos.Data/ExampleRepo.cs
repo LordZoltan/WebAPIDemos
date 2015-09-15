@@ -12,8 +12,8 @@ namespace WebAPIDemos.Data
 	public class ExampleRepo
 	{
 
-		private static IndexedList<int, MyDataClass> _myDataClasses = IndexedBy<int>.ListOf<MyDataClass>(new IntegerKeyProducer());
+		private static IndexedList<int, MyEntity> _myDataClasses = IndexedBy<int>.ListOf<MyEntity>(new IntegerKeyProducer());
 
-		public IndexedList<int, MyDataClass> MyDataClasses { get { return _myDataClasses; } }
+		public IndexedList<int, MyEntity> MyDataClasses { get { return _myDataClasses; } }
 	}
 }

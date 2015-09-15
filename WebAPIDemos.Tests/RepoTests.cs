@@ -12,7 +12,7 @@ namespace WebAPIDemos.Tests
 		public void ShouldAddAndRetrieveObject()
 		{
 			var repo = new ExampleRepo();
-			var toAdd = new MyDataClass() { Name = "Hello World" };
+			var toAdd = new MyEntity() { Name = "Hello World" };
 			repo.MyDataClasses.Insert(toAdd);
 
 			//must assign id
@@ -30,7 +30,7 @@ namespace WebAPIDemos.Tests
 			var stringPrefix = DateTime.UtcNow.Ticks.ToString();
 
 			var repo = new ExampleRepo();
-			foreach (var obj in Enumerable.Range(0, 5).Select(i => new MyDataClass() { Name = string.Format("{0}: Object {1}", stringPrefix, i + 1.ToString()) }))
+			foreach (var obj in Enumerable.Range(0, 5).Select(i => new MyEntity() { Name = string.Format("{0}: Object {1}", stringPrefix, i + 1.ToString()) }))
 			{
 				repo.MyDataClasses.Insert(obj);
 			}
