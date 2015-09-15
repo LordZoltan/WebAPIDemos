@@ -7,18 +7,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.Server", "WebAP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.Data", "WebAPIDemos.Data\WebAPIDemos.Data.csproj", "{FA48AADE-F1C7-4D14-850F-EE4E9895045E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.Abstractions", "WebAPIDemos.ServiceLayer.Abstractions\WebAPIDemos.ServiceLayer.Abstractions.csproj", "{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.Direct", "WebAPIDemos.ServiceLayer.Direct\WebAPIDemos.ServiceLayer.Direct.csproj", "{5CFC2E7E-DC06-44AD-9F55-BD874FD2AA08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.Tests", "WebAPIDemos.Tests\WebAPIDemos.Tests.csproj", "{89896E22-043F-48AD-84D9-CF346B27529C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.IntegrationTests", "WebAPIDemos.IntegrationTests\WebAPIDemos.IntegrationTests.csproj", "{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1CF5F8A6-D7F1-4564-A113-1D3FA3876523}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.Objects", "WebAPIDemos.ServiceLayer.Objects\WebAPIDemos.ServiceLayer.Objects.csproj", "{593B5A99-48B3-45F4-80C2-C08ED1C0626B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer", "WebAPIDemos.ServiceLayer\WebAPIDemos.ServiceLayer.csproj", "{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.IntegrationTests", "WebAPIDemos.ServiceLayer.IntegrationTests\WebAPIDemos.ServiceLayer.IntegrationTests.csproj", "{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +36,6 @@ Global
 		{FA48AADE-F1C7-4D14-850F-EE4E9895045E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA48AADE-F1C7-4D14-850F-EE4E9895045E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA48AADE-F1C7-4D14-850F-EE4E9895045E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CFC2E7E-DC06-44AD-9F55-BD874FD2AA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5CFC2E7E-DC06-44AD-9F55-BD874FD2AA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CFC2E7E-DC06-44AD-9F55-BD874FD2AA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,6 +44,14 @@ Global
 		{89896E22-043F-48AD-84D9-CF346B27529C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89896E22-043F-48AD-84D9-CF346B27529C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89896E22-043F-48AD-84D9-CF346B27529C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{593B5A99-48B3-45F4-80C2-C08ED1C0626B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593B5A99-48B3-45F4-80C2-C08ED1C0626B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{593B5A99-48B3-45F4-80C2-C08ED1C0626B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{593B5A99-48B3-45F4-80C2-C08ED1C0626B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E1BCC1-A8AA-401D-9B97-05C80D1D27E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU

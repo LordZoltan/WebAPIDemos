@@ -13,12 +13,12 @@ namespace WebAPIDemos.Tests
 		{
 			var repo = new ExampleRepo();
 			var toAdd = new MyEntity() { Name = "Hello World" };
-			repo.MyDataClasses.Insert(toAdd);
+			repo.MyEntities.Insert(toAdd);
 
 			//must assign id
 			Assert.AreNotEqual(0, toAdd.Id);
 			//must retrieve by that ID
-			Assert.AreSame(toAdd, repo.MyDataClasses.Fetch(toAdd.Id));
+			Assert.AreSame(toAdd, repo.MyEntities.Fetch(toAdd.Id));
 		}
 
 		[TestMethod]
@@ -32,10 +32,10 @@ namespace WebAPIDemos.Tests
 			var repo = new ExampleRepo();
 			foreach (var obj in Enumerable.Range(0, 5).Select(i => new MyEntity() { Name = string.Format("{0}: Object {1}", stringPrefix, i + 1.ToString()) }))
 			{
-				repo.MyDataClasses.Insert(obj);
+				repo.MyEntities.Insert(obj);
 			}
 
-			var firstSearch = repo.MyDataClasses.All().Where(o => o.Name.StartsWith(stringPrefix)).Count();
+			var firstSearch = repo.MyEntities.All().Where(o => o.Name.StartsWith(stringPrefix)).Count();
 			Assert.AreEqual(5, firstSearch);
 		}
 	}

@@ -6,8 +6,8 @@
     <ProjectGuid>{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPIDemos.IntegrationTests</RootNamespace>
-    <AssemblyName>WebAPIDemos.IntegrationTests</AssemblyName>
+    <RootNamespace>WebAPIDemos.ServiceLayer.IntegrationTests</RootNamespace>
+    <AssemblyName>WebAPIDemos.ServiceLayer.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,8 +50,31 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="GenericServiceTestsBase.cs" />
+    <Compile Include="MyObjectServiceTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebAPIDemos.Data\WebAPIDemos.Data.csproj">
+      <Project>{fa48aade-f1c7-4d14-850f-ee4e9895045e}</Project>
+      <Name>WebAPIDemos.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.Server\WebAPIDemos.Server.csproj">
+      <Project>{24ac6e3d-40d9-4544-b812-0e91ba57e7b8}</Project>
+      <Name>WebAPIDemos.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer.Direct\WebAPIDemos.ServiceLayer.Direct.csproj">
+      <Project>{5cfc2e7e-dc06-44ad-9f55-bd874fd2aa08}</Project>
+      <Name>WebAPIDemos.ServiceLayer.Direct</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer.Objects\WebAPIDemos.ServiceLayer.Objects.csproj">
+      <Project>{593b5a99-48b3-45f4-80c2-c08ed1c0626b}</Project>
+      <Name>WebAPIDemos.ServiceLayer.Objects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer\WebAPIDemos.ServiceLayer.csproj">
+      <Project>{b3e1bcc1-a8aa-401d-9b97-05c80d1d27e0}</Project>
+      <Name>WebAPIDemos.ServiceLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

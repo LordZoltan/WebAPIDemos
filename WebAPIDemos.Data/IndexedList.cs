@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 
 namespace WebAPIDemos.Data
 {
+    public static class Key
+    {
+        public class UsingHandler<TKey>
+        {
+            private readonly IKeyProducer<TKey> _keyProducer;
+            internal UsingHandler(IKeyProducer<TKey> keyProducer)
+            {
+                _keyProducer = keyProducer;
+            }
 
-	public static class IndexedBy<TKey>
-	{
-		public static IndexedList<TKey, TObject> ListOf<TObject>(IKeyProducer<TKey> keyProducer) where TObject : IIndexedObject<TKey>
-		{
-			return new IndexedList<TKey, TObject>(keyProducer);
-		}
-	}
+            public IndexedList<TKey, TObject> List<TObject>() where TObject : IIndexedObject<TKey>
+            {
+                return new IndexedList<TKey, TObject>(_keyProducer);   
+            }
+        }
+
+        public static UsingHandler<TKey> By<TKey>(IKeyProducer<TKey> keyProducer)
+        {
+            return new UsingHandler<TKey>(keyProducer);
+        }
+    }
 
 	public class IndexedList<TKey, TObject> where TObject : IIndexedObject<TKey>
 	{

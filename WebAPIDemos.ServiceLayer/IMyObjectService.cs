@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using WebAPIDemos.Data;
 
-namespace WebAPIDemos.ServiceLayer.Abstractions
+namespace WebAPIDemos.ServiceLayer
 {
     public interface IMyObjectService
     {
 			Task<MyObject> GetMyObject(int id);
-			Task InsertMyDataClass(MyObject obj);
+			Task InsertMyObject(MyObject obj);
 			Task<IQueryable<MyObject>> All();
     }
 }

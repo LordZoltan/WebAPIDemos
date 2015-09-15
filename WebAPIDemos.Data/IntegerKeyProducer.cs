@@ -8,7 +8,9 @@ namespace WebAPIDemos.Data
 {
 	public class IntegerKeyProducer : IKeyProducer<int>
 	{
-		private int _lastKey = 0;
+		private int _lastKey;
+
+        public IntegerKeyProducer(int seed = 0) { _lastKey = seed; }
 
 		public int GetNextKey()
 		{
