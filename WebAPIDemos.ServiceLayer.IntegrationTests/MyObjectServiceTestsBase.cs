@@ -20,17 +20,19 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
             return string.Format("Object {0}", Guid.NewGuid());
         }
 
-		[TestMethod]
-		public async Task ShouldInsertObject_AndSetID()
-		{
+        [TestMethod]
+        public async Task ShouldInsertObject_AndSetID()
+        {
             //how do we test? by checking that the returned object's ID is not the same
             var service = CreateService();
             string expectedName = GenerateNewObjectName();
             MyObject toInsert = new MyObject() { Name = expectedName };
             int originalID = toInsert.Id;
-            await service.InsertMyObject(new SimpleCreateRequest<MyObject>(toInsert));
-            Assert.AreNotEqual(originalID, toInsert.Id);
-		}
+
+            var result = await service.InsertMyObject(toInsert.AsServiceRequest());
+            Assert.IsTrue(result.Success);
+            Assert.AreNotEqual(originalID, result.Result);
+        }
 
         [TestMethod]
         public async Task ShouldInsertObject_ThenRetrieve()

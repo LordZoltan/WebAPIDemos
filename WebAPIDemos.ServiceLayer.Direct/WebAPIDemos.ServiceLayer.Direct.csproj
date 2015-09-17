@@ -44,8 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperConfiguration.cs" />
-    <Compile Include="DirectMyDataClassService.cs" />
+    <Compile Include="MyObjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestExtensions.cs" />
+    <Compile Include="ServiceResponse.cs" />
+    <Compile Include="ServiceResponseExtensions.cs" />
+    <Compile Include="ServiceResponse`1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebAPIDemos.Data\WebAPIDemos.Data.csproj">

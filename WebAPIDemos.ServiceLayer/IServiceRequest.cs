@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
 namespace WebAPIDemos.ServiceLayer
 {
     /// <summary>
-    /// core request base class
+    /// core request interface 
     /// 
-    /// immutable to prevent tampering and to provide clear construction path.
+    /// note - the default implementation for this interface is found in this library to ensure that all consumers, 
+    /// regardless of the back-end implementation being used, can feed requests into the service implementation in the same 
+    /// way.
     /// </summary>
-    public class RequestBase
+    public interface IServiceRequest
     {
         //TODO: think about how to incorporate cancellation into this.
         //Can't add a CancellationToken directly to it - because you can't serialize 
@@ -19,21 +22,6 @@ namespace WebAPIDemos.ServiceLayer
         //serialization attributes - because it's not up to the library to determine how it will be
         //serialized in a downstream client/server pair.
 
-
-        public RequestBase()
-        {
-            
-        }
-
-        /// <summary>
-        /// Allows a new request to 'inherit' values from another.
-        /// </summary>
-        /// <param name="source">Required.  An existing request from which to inherit properties.</param>
-        public RequestBase(RequestBase source)
-        {
-            
-        }
-
-        //TODO: add members for calling user etc.
+        //TODO: add members for 'calling user' etc.
     }
 }

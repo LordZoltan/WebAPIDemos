@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebAPIDemos.ServiceLayer
 {
-    public class CreateResponse : ResponseBase
+    public static class RequestExtensions
     {
 
     }
