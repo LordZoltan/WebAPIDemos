@@ -121,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
@@ -157,11 +156,14 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Models\ApiServiceResponse`1.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MyObjectsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApiServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -216,9 +218,21 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WebAPIDemos.Data\WebAPIDemos.Data.csproj">
+      <Project>{fa48aade-f1c7-4d14-850f-ee4e9895045e}</Project>
+      <Name>WebAPIDemos.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebAPIDemos.ServiceLayer.Direct\WebAPIDemos.ServiceLayer.Direct.csproj">
       <Project>{5cfc2e7e-dc06-44ad-9f55-bd874fd2aa08}</Project>
       <Name>WebAPIDemos.ServiceLayer.Direct</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer.Objects\WebAPIDemos.ServiceLayer.Objects.csproj">
+      <Project>{593b5a99-48b3-45f4-80c2-c08ed1c0626b}</Project>
+      <Name>WebAPIDemos.ServiceLayer.Objects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebAPIDemos.ServiceLayer\WebAPIDemos.ServiceLayer.csproj">
+      <Project>{b3e1bcc1-a8aa-401d-9b97-05c80d1d27e0}</Project>
+      <Name>WebAPIDemos.ServiceLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

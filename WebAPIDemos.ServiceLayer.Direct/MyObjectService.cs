@@ -47,16 +47,20 @@ namespace WebAPIDemos.ServiceLayer.Direct
     /// </summary>
     public class MyObjectService : IMyObjectService
     {
-
-        //this implementation is 
-
         public Task<IServiceResponse<MyObject>> GetMyObject(IServiceRequest<int> id)
         {
             id.MustNotBeNull("id");
 
             return Task.Factory.StartNew(() => {
-                var repo = new ExampleRepo();
-                return Mapper.Map<MyObject>(repo.MyEntities.Fetch(id.Argument)).AsSuccessfulResponse();
+                using (var repo = new ExampleRepo())
+                {
+                    var found = Mapper.Map<MyObject>(repo.MyEntities.Fetch(id.Argument));
+
+                    if (found != null)
+                        return found.AsSuccessfulResponse();
+                    else //could be nicer - ideally want a 'AsResponse' method that will auto-select success/fail based on not-null/null
+                        return found.AsFailedResponse(); 
+                }
             });
         }
 
@@ -65,24 +69,25 @@ namespace WebAPIDemos.ServiceLayer.Direct
             obj.MustNotBeNull("obj");
 
              return Task.Factory.StartNew(() => {
-                 var repo = new ExampleRepo();
-                 
-                 var toInsert = Mapper.Map<MyEntity>(obj.Argument);
-                 try
+                 using (var repo = new ExampleRepo())
                  {
-                     repo.MyEntities.Insert(toInsert);
-                 }
-                 catch(Exception ex)
-                 {
-                     //yes - catching all exceptions is not good - but this is just demonstrating how you might use the exception to
-                     //generate a failed response that automatically has the exception on it.
+                     var toInsert = Mapper.Map<MyEntity>(obj.Argument);
+                     try
+                     {
+                         repo.MyEntities.Insert(toInsert);
+                     }
+                     catch (Exception ex)
+                     {
+                         //yes - catching all exceptions is not good - but this is just demonstrating how you might use the exception to
+                         //generate a failed response that automatically has the exception on it.
 
-                     //IN SOME CASES, your service layer operations will bubble their exceptions out, of course - it all depends 
-                     //on how you want to handle it.
-                     return ex.AsFailedResponse<int>();
-                 }
+                         //IN SOME CASES, your service layer operations will bubble their exceptions out, of course - it all depends 
+                         //on how you want to handle it.
+                         return ex.AsFailedResponse<int>();
+                     }
 
-                 return toInsert.Id.AsSuccessfulResponse();
+                     return toInsert.Id.AsSuccessfulResponse();
+                 }
              });
         }
     }

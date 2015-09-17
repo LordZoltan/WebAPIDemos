@@ -21,6 +21,20 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
         }
 
         [TestMethod]
+        public async Task ShouldReturnUnsuccessfulForMissingObject()
+        {
+            //controlled environment here - we know that no object will ever be given -1 as an ID
+            var service = CreateService();
+            //note - another way to do this is to have another result type for 'Get' operations which adds
+            //a 'NotFound' property (see XMLDoc comments on the IMyObjectService.GetMyObject method for more).
+            var result = await service.GetMyObject((-1).AsServiceRequest());
+
+            Assert.IsFalse(result.Success);
+            Assert.IsNull(result.ErrorMessage);
+            Assert.IsNull(result.Exception);
+        }
+
+        [TestMethod]
         public async Task ShouldInsertObject_AndSetID()
         {
             //how do we test? by checking that the returned object's ID is not the same
@@ -37,7 +51,16 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
         [TestMethod]
         public async Task ShouldInsertObject_ThenRetrieve()
         {
-
+            //being an integration test - this is similar to the above test - except we're also testing that we can retrieve
+            //what we've inserted by the id that is returned.
+            var service = CreateService();
+            string expectedName = GenerateNewObjectName();
+            MyObject toInsert = new MyObject() { Name = expectedName };
+            var result = await service.InsertMyObject(toInsert.AsServiceRequest());
+            Assert.IsTrue(result.Success);
+            var retrieved = await service.GetMyObject(result.Result.AsServiceRequest());
+            Assert.IsTrue(retrieved.Success);
+            Assert.AreEqual(expectedName, retrieved.Result.Name);
         }
 	}
 }

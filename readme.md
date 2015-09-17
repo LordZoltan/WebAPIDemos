@@ -1,7 +1,8 @@
 WebAPIDemos
 --
 
-This solution is demonstration of how you might implement a shared service layer with two implementations 
+More than just the name implies - this solution is demonstration of how you might implement a shared service layer 
+with two implementations 
 
 - One that's bound 'directly' to a data store (e.g. database)
 - One that's bound via REST services implemented via Asp.Net Web API
@@ -9,6 +10,9 @@ This solution is demonstration of how you might implement a shared service layer
 The end result is a service layer that can be used interchangeably, anywhere.
 
 The REST services are consumed via a generic component that leverages the modern HTTP client provided by Asp.Net Web API
+
+*[Important reading about REST anti-patterns](http://www.infoq.com/articles/rest-anti-patterns).  This demonstration
+attempts to provide a framework for avoiding them...*
 
 All the service layer operations are asynchronous.
 

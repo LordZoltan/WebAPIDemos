@@ -14,6 +14,9 @@ namespace WebAPIDemos.Server.App_Start
     {
         public static void Start()
         {
+            //ensures that the direct service layer, that we are using as our back-end implementation
+            //is initialised correctly.
+
             AutoMapper.Mapper.Initialize(cfg => {
                 ServiceLayer.Direct.AutoMapperConfiguration.Configure(cfg);
             });

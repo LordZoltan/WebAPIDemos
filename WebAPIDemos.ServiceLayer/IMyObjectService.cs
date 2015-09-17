@@ -23,6 +23,12 @@ namespace WebAPIDemos.ServiceLayer
     {
         /// <summary>
         /// Fetches an object with the given ID (wrapped in the IServiceRequest member)
+        /// 
+        /// If the object is not found, then the response will have success=false without an exception
+        /// or error message.
+        /// 
+        /// DESIGN NOTE: Another option would be to have an IGetResponse that inherits IServiceResponse, 
+        /// and which adds a 'NotFound' boolean that can be True.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

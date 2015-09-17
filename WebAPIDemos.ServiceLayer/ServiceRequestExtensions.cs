@@ -24,6 +24,10 @@ namespace WebAPIDemos.ServiceLayer
         /// <returns></returns>
         public static IServiceRequest<T> AsServiceRequest<T>(this T argument, IServiceRequest source = null)
         {
+            //IN THE REAL WORLD - if you are pulling the current user from the current thread identity, and
+            //passing the user information over in the request, then you'd use this version of the extension
+            //method to pull the user out of the thread and attach it to the request automatically.
+
             return new ServiceRequest<T>(argument, source);
         }
     }
