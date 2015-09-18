@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.Server", "WebAPIDemos.Server\WebAPIDemos.Server.csproj", "{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.Data", "WebAPIDemos.Data\WebAPIDemos.Data.csproj", "{FA48AADE-F1C7-4D14-850F-EE4E9895045E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.Direct", "WebAPIDemos.ServiceLayer.Direct\WebAPIDemos.ServiceLayer.Direct.csproj", "{5CFC2E7E-DC06-44AD-9F55-BD874FD2AA08}"
@@ -22,16 +20,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.IntegrationTests", "WebAPIDemos.ServiceLayer.IntegrationTests\WebAPIDemos.ServiceLayer.IntegrationTests.csproj", "{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.WebAPI.Server", "WebAPIDemos.ServiceLayer.WebAPI.Server\WebAPIDemos.ServiceLayer.WebAPI.Server.csproj", "{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemos.ServiceLayer.WebAPI", "WebAPIDemos.ServiceLayer.WebAPI\WebAPIDemos.ServiceLayer.WebAPI.csproj", "{3A87F793-F075-4869-B558-CA5A0FBA46C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA48AADE-F1C7-4D14-850F-EE4E9895045E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA48AADE-F1C7-4D14-850F-EE4E9895045E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA48AADE-F1C7-4D14-850F-EE4E9895045E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,6 +54,14 @@ Global
 		{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8441C1F-1EEF-49CC-906B-6E1380F2CEA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24AC6E3D-40D9-4544-B812-0E91BA57E7B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A87F793-F075-4869-B558-CA5A0FBA46C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A87F793-F075-4869-B558-CA5A0FBA46C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A87F793-F075-4869-B558-CA5A0FBA46C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A87F793-F075-4869-B558-CA5A0FBA46C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

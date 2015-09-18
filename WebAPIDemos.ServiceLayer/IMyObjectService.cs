@@ -42,6 +42,7 @@ namespace WebAPIDemos.ServiceLayer
         /// <returns></returns>
         Task<IServiceResponse<int>> InsertMyObject(IServiceRequest<MyObject> obj);
 
-        //Task<IQueryable<MyObject>> All();
+        //QUERYING Objects Needs thought - a blanket IQueryable exposure is not a good idea, not
+        //without an awful lot of work...
     }
 }

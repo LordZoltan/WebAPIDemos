@@ -28,7 +28,7 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
             //note - another way to do this is to have another result type for 'Get' operations which adds
             //a 'NotFound' property (see XMLDoc comments on the IMyObjectService.GetMyObject method for more).
             var result = await service.GetMyObject((-1).AsServiceRequest());
-
+            Assert.IsNotNull(result);
             Assert.IsFalse(result.Success);
             Assert.IsNull(result.ErrorMessage);
             Assert.IsNull(result.Exception);
@@ -44,7 +44,8 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
             int originalID = toInsert.Id;
 
             var result = await service.InsertMyObject(toInsert.AsServiceRequest());
-            Assert.IsTrue(result.Success);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
             Assert.AreNotEqual(originalID, result.Result);
         }
 
@@ -57,7 +58,8 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
             string expectedName = GenerateNewObjectName();
             MyObject toInsert = new MyObject() { Name = expectedName };
             var result = await service.InsertMyObject(toInsert.AsServiceRequest());
-            Assert.IsTrue(result.Success);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
             var retrieved = await service.GetMyObject(result.Result.AsServiceRequest());
             Assert.IsTrue(retrieved.Success);
             Assert.AreEqual(expectedName, retrieved.Result.Name);
