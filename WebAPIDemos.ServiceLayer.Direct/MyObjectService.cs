@@ -51,6 +51,10 @@ namespace WebAPIDemos.ServiceLayer.Direct
         {
             id.MustNotBeNull("id");
 
+            MyObject foo = null;
+
+            //return Task.FromResult(foo.AsSuccessfulResponse());
+
             return Task.Factory.StartNew(() => {
                 using (var repo = new ExampleRepo())
                 {
