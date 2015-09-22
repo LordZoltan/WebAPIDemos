@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebAPIDemos.ServiceLayer.Direct
+namespace WebAPIDemos.ServiceLayer.Response
 {
     /// <summary>
     /// Implementation of the IServiceResponse{TResult} interface
+    /// 
+    /// This is a suggested implementation for non-Web API services (because it's not explicitly serializable).
     /// 
     /// Note - if TResult is 'string' then, in order to create a success instance, you'll need to 
     /// call var a = new ServiceResponse<string>("s", true); - otherwise the code will automatically

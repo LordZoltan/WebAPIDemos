@@ -49,6 +49,9 @@
     <Compile Include="ServiceRequest.cs" />
     <Compile Include="ServiceRequestExtensions.cs" />
     <Compile Include="ServiceRequest`1.cs" />
+    <Compile Include="Response\ServiceResponse.cs" />
+    <Compile Include="Response\ServiceResponseExtensions.cs" />
+    <Compile Include="Response\ServiceResponse`1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebAPIDemos.Data\WebAPIDemos.Data.csproj">

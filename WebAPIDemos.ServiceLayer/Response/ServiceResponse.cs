@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WebAPIDemos.ServiceLayer.Direct
+namespace WebAPIDemos.ServiceLayer.Response
 {
     /// <summary>
-    /// Represents responses for the direct service implementation
+    /// Represents responses for service implementations.
     /// 
-    /// Note - class is deliberately immutable
+    /// IMPORTANT - services do not have to use this class for IServiceResponse return values, it's only a
+    /// suggested implementation.  The Web API server and client implementations don't use this type because 
+    /// they need to control the serialization of the response object.
+    /// 
+    /// This type should, therefore, NOT be used for serialization.
+    /// 
+    /// Note - class is deliberately immutable.
     /// </summary>
     public class ServiceResponse : WebAPIDemos.ServiceLayer.IServiceResponse
     {

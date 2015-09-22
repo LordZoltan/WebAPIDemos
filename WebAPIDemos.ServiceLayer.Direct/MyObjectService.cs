@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPIDemos.Data;
-using WebAPIDemos.ServiceLayer.RequestValidation; //need this to validate requests using the extension methods
+using WebAPIDemos.ServiceLayer.RequestValidation;   //need this to validate requests using the extension methods
+using WebAPIDemos.ServiceLayer.Response;            //need this to use the built-in ServiceResponse<T> class and extension methods.
 
 namespace WebAPIDemos.ServiceLayer.Direct
 {

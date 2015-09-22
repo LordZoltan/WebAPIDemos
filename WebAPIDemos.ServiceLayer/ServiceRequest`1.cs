@@ -10,7 +10,7 @@ namespace WebAPIDemos.ServiceLayer
     /// Standard implementation of the generic IServiceRequest{TArg} interface.
     /// 
     /// This is part of the main service layer so that every consumer can construct
-    /// requests to any service layer implementation
+    /// requests to any service layer implementation.
     /// </summary>
     /// <typeparam name="TArg"></typeparam>
     public class ServiceRequest<TArg> : ServiceRequest, IServiceRequest<TArg>
