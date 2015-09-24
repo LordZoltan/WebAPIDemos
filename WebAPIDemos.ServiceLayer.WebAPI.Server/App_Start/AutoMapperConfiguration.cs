@@ -19,6 +19,7 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.App_Start
 
             AutoMapper.Mapper.Initialize(cfg => {
                 ServiceLayer.Direct.AutoMapperConfiguration.Configure(cfg);
+                Models.AutoMapperConfiguration.Configure(cfg);
             });
         }
     }

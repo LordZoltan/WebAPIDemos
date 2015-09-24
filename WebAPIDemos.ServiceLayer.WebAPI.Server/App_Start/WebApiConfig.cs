@@ -13,13 +13,7 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server
 
 			// Web API routes
 			config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                    name: "UserRoles",
-                    routeTemplate: "api/users/{id}/Roles",
-                    defaults: new {  action = "UserRoles" }
-            );
-
+            
 			config.Routes.MapHttpRoute(
 					name: "DefaultApi",
 					routeTemplate: "api/{controller}/{id}",

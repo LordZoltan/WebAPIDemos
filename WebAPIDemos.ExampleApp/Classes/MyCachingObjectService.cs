@@ -62,5 +62,14 @@ namespace WebAPIDemos.ExampleApp.Classes
             //the inner implementation's task method.
             return _inner.InsertMyObject(obj);
         }
+
+
+        public System.Threading.Tasks.Task<IServiceResponse<PagedResult<MyObject>>> QueryMyObjects(IServiceRequest<PagedQuery> query)
+        {
+            //no caching here
+            //although - what we could do is check whether any of the objects coming back are in the cache and, if they are,
+            //then we replace them for when we do individual gets ONLY
+            return _inner.QueryMyObjects(query);
+        }
     }
 }

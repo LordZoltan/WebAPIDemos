@@ -44,5 +44,13 @@ namespace WebAPIDemos.ServiceLayer
 
         //QUERYING Objects Needs thought - a blanket IQueryable exposure is not a good idea, not
         //without an awful lot of work...
+        //however - this is the kind of pattern we're aiming for:
+
+        /// <summary>
+        /// Returns 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<IServiceResponse<PagedResult<MyObject>>> QueryMyObjects(IServiceRequest<PagedQuery> query);
     }
 }

@@ -56,7 +56,8 @@ namespace WebAPIDemos.ServiceLayer.Direct
 
             //return Task.FromResult(foo.AsSuccessfulResponse());
 
-            return Task.Factory.StartNew(() => {
+            return Task.Factory.StartNew(() =>
+            {
                 using (var repo = new ExampleRepo())
                 {
                     var found = Mapper.Map<MyObject>(repo.MyEntities.Fetch(id.Argument));
@@ -64,7 +65,7 @@ namespace WebAPIDemos.ServiceLayer.Direct
                     if (found != null)
                         return found.AsSuccessfulResponse();
                     else //could be nicer - ideally want a 'AsResponse' method that will auto-select success/fail based on not-null/null
-                        return found.AsFailedResponse(); 
+                        return found.AsFailedResponse();
                 }
             });
         }
@@ -73,27 +74,65 @@ namespace WebAPIDemos.ServiceLayer.Direct
         {
             obj.MustNotBeNull("obj");
 
-             return Task.Factory.StartNew(() => {
-                 using (var repo = new ExampleRepo())
-                 {
-                     var toInsert = Mapper.Map<MyEntity>(obj.Argument);
-                     try
-                     {
-                         repo.MyEntities.Insert(toInsert);
-                     }
-                     catch (Exception ex)
-                     {
-                         //yes - catching all exceptions is not good - but this is just demonstrating how you might use the exception to
-                         //generate a failed response that automatically has the exception on it.
+            return Task.Factory.StartNew(() =>
+            {
+                using (var repo = new ExampleRepo())
+                {
+                    var toInsert = Mapper.Map<MyEntity>(obj.Argument);
+                    try
+                    {
+                        repo.MyEntities.Insert(toInsert);
+                    }
+                    catch (Exception ex)
+                    {
+                        //yes - catching all exceptions is not good - but this is just demonstrating how you might use the exception to
+                        //generate a failed response that automatically has the exception on it.
 
-                         //IN SOME CASES, your service layer operations will bubble their exceptions out, of course - it all depends 
-                         //on how you want to handle it.
-                         return ex.AsFailedResponse<int>();
-                     }
+                        //IN SOME CASES, your service layer operations will bubble their exceptions out, of course - it all depends 
+                        //on how you want to handle it.
+                        return ex.AsFailedResponse<int>();
+                    }
 
-                     return toInsert.Id.AsSuccessfulResponse();
-                 }
-             });
+                    return toInsert.Id.AsSuccessfulResponse();
+                }
+            });
+        }
+
+
+        public Task<IServiceResponse<PagedResult<MyObject>>> QueryMyObjects(IServiceRequest<PagedQuery> query)
+        {
+            query.MustNotBeNull("query");
+
+            //just showing another way of 'faking' a task when there's no asynchrony actually involved:
+
+            using (var repo = new ExampleRepo())
+            {
+
+
+                if (query.Argument.PageSize == -1) //get all
+                {
+                    var all = repo.MyEntities.All().ToArray();
+
+                    var result = new PagedResult<MyObject>() { Count = all.Length, Page = 1, PageCount = 1, PageResults = Mapper.Map<MyEntity[], MyObject[]>(all), TotalCount = all.Length }.AsSuccessfulResponse();
+                    return Task.FromResult(result);
+                }
+                else
+                {
+                    var total = repo.MyEntities.All().Count();
+                    //to do - should be doing a bit more validation here...
+                    var page = repo.MyEntities.All().Skip(query.Argument.Page - 1 * query.Argument.PageSize).Take(query.Argument.PageSize).ToArray();
+                    var result = new PagedResult<MyObject>()
+                    {
+                        TotalCount = total,
+                        Page = query.Argument.Page,
+                        Count = page.Length,
+                        PageCount = (int)Math.Round(((decimal)total / query.Argument.PageSize) + 0.5M),
+                        PageResults = Mapper.Map<MyEntity[], MyObject[]>(page)
+                    }.AsSuccessfulResponse();
+                    return Task.FromResult(result);
+                }
+
+            }
         }
     }
 }

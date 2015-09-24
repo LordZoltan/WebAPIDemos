@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebAPIDemos.ExampleApp.Classes;
 using WebAPIDemos.ServiceLayer;
 
 namespace WebAPIDemos.ExampleApp.Controllers
 {
     public class HomeController : Controller
     {
-        IMyObjectService _myObjectService = new ServiceLayer.WebAPI.MyObjectService(new ServiceLayer.WebAPI.HttpRequestManager("localhost", 25564));
+        //demonstrating use of the caching object service
+        IMyObjectService _myObjectService = new MyCachingObjectService(
+            new ServiceLayer.WebAPI.MyObjectService(new ServiceLayer.WebAPI.HttpRequestManager("localhost", 25564)));
 
         public async Task<ActionResult> Index()
         {

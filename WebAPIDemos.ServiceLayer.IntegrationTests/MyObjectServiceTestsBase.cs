@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using WebAPIDemos.ServiceLayer;
+using System.Linq;
 
 namespace WebAPIDemos.ServiceLayer.IntegrationTests
 {
@@ -30,7 +31,8 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
             var result = await service.GetMyObject((-1).AsServiceRequest());
             Assert.IsNotNull(result);
             Assert.IsFalse(result.Success);
-            Assert.IsNull(result.ErrorMessage);
+            //changed this test behaviour - removed the null check for error message because our
+            //Web API client should return message strings - to make diagnosing problems much simpler.
             Assert.IsNull(result.Exception);
         }
 
@@ -63,6 +65,29 @@ namespace WebAPIDemos.ServiceLayer.IntegrationTests
             var retrieved = await service.GetMyObject(result.Result.AsServiceRequest());
             Assert.IsTrue(retrieved.Success);
             Assert.AreEqual(expectedName, retrieved.Result.Name);
+        }
+
+        [TestMethod]
+        public async Task ShouldInsertAFew_ThenPage()
+        {
+            var service = CreateService();
+            var toInsert = Enumerable.Range(1, 15).Select(i => new MyObject() { Name = GenerateNewObjectName() }).ToArray();
+
+            foreach(var obj in toInsert)
+            {
+                var result = await service.InsertMyObject(obj.AsServiceRequest());
+                Assert.IsNotNull(result);
+                Assert.IsTrue(result.Success, result.ErrorMessage);
+            }
+            
+            //now run a paged query
+
+            var queryResult = await service.QueryMyObjects(new PagedQuery() { Page = 1, PageSize = 10 }.AsServiceRequest());
+
+            Assert.IsNotNull(queryResult);
+            Assert.IsTrue(queryResult.Success, queryResult.ErrorMessage);
+            Assert.IsTrue(queryResult.Result.PageCount > 1);
+
         }
 	}
 }

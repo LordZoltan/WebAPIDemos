@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -36,6 +37,30 @@ namespace WebAPIDemos.ServiceLayer.WebAPI
         {
             obj.MustNotBeNull("obj");
             return await _requestManager.Send<MyObject, ApiServiceResponse<int>>("api/MyObjects", HttpMethod.Post, obj);
+        }
+
+
+        public async System.Threading.Tasks.Task<IServiceResponse<PagedResult<MyObject>>> QueryMyObjects(IServiceRequest<PagedQuery> query)
+        {
+            query.MustNotBeNull("query");
+            
+            //this method of query strings from object content can be refactored.  However, it will have to be a more complex solution
+            //that is completely generic and handles nested objects in the same way that the server libraries expect to see.
+            //for now, this merely demonstrates the core principle.
+            Dictionary<string, string> queryKeyValues = new Dictionary<string, string>();
+            //some system that relies on a similar mechanism to Model Binding should be used to convert to strings.  That uses
+            //the TypeDescriptor.GetConverter mechanism, so we couuld do the same.
+            queryKeyValues["Page"] = Convert.ToString(query.Argument.Page);
+            queryKeyValues["PageSize"] = Convert.ToString(query.Argument.PageSize);
+            string queryString = null;
+            using (var tempContent = new FormUrlEncodedContent(queryKeyValues))
+            {
+                //why use this?  It handles the url encoding - and doesn't require System.Web (another popular
+                //solution uses HttpUtility.ParseQueryString - but client code has no business referencing System.Web).
+                queryString = await tempContent.ReadAsStringAsync();
+            }
+
+            return await _requestManager.Get<ApiServiceResponse<PagedResult<MyObject>>>(string.Concat("api/MyObjects?", queryString), query);
         }
     }
 }

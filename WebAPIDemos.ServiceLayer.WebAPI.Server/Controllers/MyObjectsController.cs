@@ -1,10 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using WebAPIDemos.ServiceLayer.WebAPI.Server.Models;
 
 namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
 {
@@ -26,7 +28,7 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> Get(int id)
+        public Task<HttpResponseMessage> Get(int? id, [FromUri]PagedQuery query)
         {
             /*
             the choice of return type for action methods is important, depending on what you need to communicate back to your
@@ -59,15 +61,50 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
             is a task that can be undertaken later.  There are good guides out there for this.*/
 
             //TODO: make this either AutoMapped or simply create an extension method to create our response object
-            var result = new Models.ApiServiceResponse<MyObject>(await _myObjectService.GetMyObject(id.AsServiceRequest()));
+
+            //if there's an ID, return the object
+            //if there's no ID, then use the pagedquery
+            if (id != null)
+            {
+                return GetSingle(id.Value);
+            }
+            else
+            {
+                return Query(query);
+            }
+        }
+
+        /// <summary>
+        /// private handler method for getting a single object
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<HttpResponseMessage> GetSingle(int id)
+        {
+            var result = (await _myObjectService.GetMyObject(id.AsServiceRequest())).ToApiServiceResponse();
             HttpStatusCode statusCode = HttpStatusCode.OK;
-            if(!result.Success)
+            if (!result.Success)
             {
                 //if there's an exception and/or error message - then it's InternalServerError
                 //if there's neither of those, then it's 404
                 if (result.HasError)
                     statusCode = HttpStatusCode.InternalServerError;
                 else
+                    statusCode = HttpStatusCode.NotFound;
+            }
+            return Request.CreateResponse(statusCode, result);
+        }
+
+        private async Task<HttpResponseMessage> Query(PagedQuery query)
+        {
+            var result = (await _myObjectService.QueryMyObjects(query.AsServiceRequest())).ToApiServiceResponse();
+            HttpStatusCode statusCode = HttpStatusCode.OK;
+            if(!result.Success)
+            {
+                if (result.HasError)
+                    statusCode = HttpStatusCode.InternalServerError;
+                else
+                    //not actually sure what status code to use here if a query fails without an error.  Will use NotFound, though.
                     statusCode = HttpStatusCode.NotFound;
             }
             return Request.CreateResponse(statusCode, result);
@@ -84,21 +121,20 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
         /// </summary>
         /// <param name="newObject"></param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> Post(MyObject newObject)
+        public async Task<HttpResponseMessage> Post(MyObjectModel newObject)
         {
             //Just demonstrating that here you can leverage Web APIs model binding to
             //perform extended validation on the objects that are coming into your API,
-            
-            //clearly - you could take ModelState and feed it into an unsuccessful response object
-            //that you send back to the client along with the 400.
-            //note - also - that, if you're intending to use these features of Web API, then
-            //you should bind to an API model type that is annotated with DataAnnotations, and
             if(!ModelState.IsValid)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new Models.ApiServiceResponse<int>());
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new Models.ApiServiceResponse<int>() 
+                { 
+                    //clearly the error message would be better as a dictionary of strings.
+                    ErrorMessage = string.Join("\n", ModelState.Select(ms => string.Format("{0}: {1}", ms.Key, ms.Value)))
+                });
             }
 
-            var result = new Models.ApiServiceResponse<int>(await _myObjectService.InsertMyObject(newObject.AsServiceRequest()));
+            var result = (await _myObjectService.InsertMyObject(Mapper.Map<MyObject>(newObject).AsServiceRequest())).ToApiServiceResponse();
 
             //'Created' is the appropriate status code result for a Post (or potentially a Put)
             HttpStatusCode statusCode = HttpStatusCode.Created;

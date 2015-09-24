@@ -38,12 +38,9 @@ namespace WebAPIDemos.ServiceLayer.WebAPI
         }
 
         /// <summary>
-        /// We expose the underlying HttpRequestMessage that was sent to the server
-        /// </summary>
-        public HttpRequestMessage ServerRequest { get; set; }
-
-        /// <summary>
-        /// We also expose the underlying HttpResponseMessage that was received from the server.
+        /// We expose the underlying HttpResponseMessage that was received from the server.
+        /// 
+        /// Note - this object also holds the request in the 'RequestMessage' property.
         /// </summary>
         public HttpResponseMessage ServerResponse { get; set; }
     }

@@ -118,13 +118,31 @@ namespace WebAPIDemos.ServiceLayer.WebAPI
                             {
                                 responseMessage = new TResponse()
                                 {
-                                    ErrorMessage = string.Format("Server returned a success status code ({0}) - but an error occurred deserialising response message of type {1}",
+                                    //note the escaped format string at the end.  We use this in a moment.
+                                    ErrorMessage = string.Format("Server returned a success status code ({0}) - but an error occurred deserialising response message of type {1}.  The response string was:\n{{0}}",
                                         (int)response.StatusCode, typeof(TResponse)),
                                     Exception = ex
                                 };
                             }
 
                             //handling what to do for unsuccessful responses is found next.
+                        }
+
+                        // if we get an exception - then we want to grab the response string, if there is one, and embed it in the error message
+                        // for debugging purposes.
+                        if(responseMessage.Exception != null)
+                        {
+                            try
+                            {
+                                string responseString = await response.Content.ReadAsStringAsync();
+                                responseMessage.ErrorMessage = string.Format(responseMessage.ErrorMessage, responseString);
+
+                            }
+                            catch(Exception ex)
+                            {
+                                //if we get another exception - give up
+                                responseMessage.ErrorMessage = string.Format(responseMessage.ErrorMessage, string.Format("(Unable to read response - {0} occurred: {1})", ex.GetType(), ex.Message));
+                            }
                         }
                     }
 
@@ -137,13 +155,19 @@ namespace WebAPIDemos.ServiceLayer.WebAPI
                         //why we exclude deserialization errors where Status Code is not 1xx, 2xx, 3xx)
                         if (responseMessage == null)
                         {
-                            responseMessage = new TResponse() { ErrorMessage = string.Format("Server returned status {0}: {1}", (int)response.StatusCode, response.ReasonPhrase ?? "No more information returned") };
+                            responseMessage = new TResponse() { ErrorMessage = FormatStandardErrorMessage(response) };
+                        }
+                        else
+                        {
+                            //if there's no error message in the response from the server - then we'll add one.
+                            if (responseMessage.ErrorMessage == null)
+                                responseMessage.ErrorMessage = FormatStandardErrorMessage(response);
                         }
                     }
                     else
                     {
                         //if the API returns a success status code but we've not received a body, then the API is not implemented
-                        //correctly - as we always expect a response object in the body.  So we surface is as an exception.
+                        //correctly - as we always expect a response object in the body.  So we surface this as an exception.
 
                         //NOTE - the use of InvalidOperationException here is arguably wrong - it's likely that this implementation 
                         //needs its own exception type for communicating an API Uri that doesn't conform to expected standards.
@@ -154,11 +178,15 @@ namespace WebAPIDemos.ServiceLayer.WebAPI
                 }
             }
 
-            //add on 
-            responseMessage.ServerRequest = request;
+            //attach the response message to the response object that we're returning...
             responseMessage.ServerResponse = response;
 
             return responseMessage;
+        }
+
+        private static string FormatStandardErrorMessage(HttpResponseMessage response)
+        {
+            return string.Format("Server returned status {0}: {1}", (int)response.StatusCode, response.ReasonPhrase ?? "No more information returned");
         }
 
         /// <summary>
