@@ -8,6 +8,7 @@ namespace WebAPIDemos.ExampleApp.Models
 {
     public class MyObjectModel
     {
+        [Display(Name="ID")]
         public int Id { get; set; }
         [Display(Name="Object Name")]
         [Required]

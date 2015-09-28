@@ -47,7 +47,7 @@ namespace WebAPIDemos.ServiceLayer.WebAPI
                 query = relativePathAndQuery.Substring(queryPos + 1);
                 //strip the query string off the relativePathAndQuery,
                 //just reusing the local variable introduced by the parameter here.
-                relativePathAndQuery = relativePathAndQuery.Substring(0, queryPos - 1);
+                relativePathAndQuery = relativePathAndQuery.Substring(0, queryPos);
             }
             string proto = secure ? "https" : "http";
             var uriBuilder = _port != null ? new UriBuilder(proto, _host, _port.Value)

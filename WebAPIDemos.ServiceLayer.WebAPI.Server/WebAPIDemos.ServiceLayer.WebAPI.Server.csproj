@@ -167,6 +167,8 @@
     <Compile Include="Models\ApiServiceResponse.cs" />
     <Compile Include="Models\AutoMapperConfiguration.cs" />
     <Compile Include="Models\MyObjectModel.cs" />
+    <Compile Include="Models\PagedResultModel.cs" />
+    <Compile Include="Models\PagedResultModel`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

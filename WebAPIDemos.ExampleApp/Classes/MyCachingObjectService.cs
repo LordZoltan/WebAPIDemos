@@ -46,7 +46,7 @@ namespace WebAPIDemos.ExampleApp.Classes
             var response = await _inner.GetMyObject(id);
 
             if (response.Success)
-                HostingEnvironment.Cache.Insert(cacheKey, cached, null, DateTime.UtcNow.AddMinutes(5), System.Web.Caching.Cache.NoSlidingExpiration);
+                HostingEnvironment.Cache.Insert(cacheKey, response.Result, null, DateTime.UtcNow.AddMinutes(5), System.Web.Caching.Cache.NoSlidingExpiration);
 
             return response;
         }

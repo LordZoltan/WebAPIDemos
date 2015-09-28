@@ -8,6 +8,8 @@ namespace WebAPIDemos.ExampleApp.Models
 {
     public class HomeIndexViewModel
     {
-        public MyObject MyObject { get; set; }
+        public IServiceResponse LastOperationResponse { get; set; }
+
+        public PagedResult<MyObjectModel> Results { get; set; }
     }
 }

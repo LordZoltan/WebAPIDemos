@@ -27,5 +27,17 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Models
         {
             Result = source.Result;
         }
+
+        /// <summary>
+        /// Allows you to initialise the service response from any other, whilst manually providing the 
+        /// Result object, if it needs to be fed in from a different source.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="result"></param>
+        public ApiServiceResponse(IServiceResponse source, T result)
+            : base(source)
+        {
+            Result = result;
+        }
     }
 }

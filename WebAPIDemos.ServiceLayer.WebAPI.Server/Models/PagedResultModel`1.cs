@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace WebAPIDemos.ServiceLayer
+namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Models
 {
-    public class PagedResult<T> : PagedResult
+    public class PagedResultModel<T> : PagedResultModel
     {
         public IEnumerable<T> PageResults { get; set; }
     }

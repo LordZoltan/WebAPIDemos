@@ -18,6 +18,42 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
         /// </summary>
         private readonly IMyObjectService _myObjectService = new WebAPIDemos.ServiceLayer.Direct.MyObjectService();
 
+        #region helper methods
+
+        /// <summary>
+        /// Selects the correct HTTP status code for a given ApiServiceResponse object based on success/fail (optionally with error).
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="successCode">The status code to use for success. Default is 200 (OK)</param>
+        /// <param name="unsuccessfulCode">The status code to use for fail.  Default is 404 (NotFound)</param>
+        /// <param name="errorCode">The status code to use fail with error.  Default is 500 (InternalServerError)</param>
+        /// <returns>An HttpStatusCode value.</returns>
+        private static HttpStatusCode GetStatusCodeForResponse(ApiServiceResponse response,
+            HttpStatusCode successCode = HttpStatusCode.OK, HttpStatusCode unsuccessfulCode = HttpStatusCode.NotFound, HttpStatusCode errorCode = HttpStatusCode.InternalServerError)
+        {
+            HttpStatusCode statusCode = successCode;
+            if (!response.Success)
+            {
+                if (response.HasError)
+                    statusCode = errorCode;
+                else
+                    statusCode = unsuccessfulCode;
+            }
+            return statusCode;
+        }
+
+        /// <summary>
+        /// Takes the passed authority-relative url and makes it 
+        /// </summary>
+        /// <param name="uriPartial"></param>
+        /// <returns></returns>
+        private Uri ToFullUri(string uriPartial)
+        {
+            //this is not quite production ready, it's just good enough for this site
+            return new Uri(new Uri(Request.RequestUri.GetLeftPart(UriPartial.Authority)), uriPartial);
+        }
+        #endregion
+
         /// <summary>
         /// note here - we don't expect a ServiceRequest object in the signature of the method - because that would mean 
         /// serialising the whole request object from the request - which is not very RESTful.  We don't need that.  Any ambient
@@ -28,7 +64,7 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<HttpResponseMessage> Get(int? id, [FromUri]PagedQuery query)
+        public Task<HttpResponseMessage> Get([FromUri]PagedQuery query, int? id = null)
         {
             /*
             the choice of return type for action methods is important, depending on what you need to communicate back to your
@@ -36,31 +72,13 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
             which demonstrates the benefits and pitfalls of each approach.
 
             I'm opting for the reasonably generic HttpResponseMessage here, because it enables me to create responses of any
-            status code, and include a body to serialize.  This enables me to respond with the correct status code.
+            status code, and include a body of any type to be serialized.  This enables me to respond with the correct status code.
 
             An arguably better approach would be to return Task<IHttpActionResult> and then use the various classes in 
             System.Web.Http.Results to create the correct results.  The ones you use the most can be surfaced as methods 
-            in a base class API controller.
-
-            The actual object that we send in the response body is set to our public model response type so that we can control the 
-            data that's sent back.  The inner result type of the response, here, is set to our servicelayer object
-            type because we *know* that it's suitable for serialization.  But for the outer response object itself, we
-            use a model type defined in this project only, that implements the interface (not that it actually has to,
-            but it does mean that you can more easily keep the type up to date as it changes).
-
-            In the situation where the servicelayer object needs to be shaped different for serialization (a real
-            possibility), then you can change the inner type and use either AutoMapper, or custom code, to map to a
-            different result type for the response.*/
+            in a base class API controller.*/
 
             //-----------------------------------------------
-
-            /*shouldn't always use await for things like this - in this case, we could use ContinueWith() with 
-            continuation options (usually one for RanToCompletion - i.e. no exception; and one for the others, 
-            i.e. cancelled or failed or whatever).  The primary difference is performance and memory usage, however,
-            in practise, async/await for these types of things is a good start.  Moving the code to .ContinueWith 
-            is a task that can be undertaken later.  There are good guides out there for this.*/
-
-            //TODO: make this either AutoMapped or simply create an extension method to create our response object
 
             //if there's an ID, return the object
             //if there's no ID, then use the pagedquery
@@ -81,39 +99,39 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
         /// <returns></returns>
         private async Task<HttpResponseMessage> GetSingle(int id)
         {
+            /*
+            The actual object that we send in the response body is set to our public model response type 
+            (via the ToApiServiceResponse extension method overload) so that we can control the 
+            data that's sent back.  The inner result type of the response, here, is set to our servicelayer object
+            type because we *know* that it's suitable for serialization.  But for the outer response object itself, we
+            use a model type defined in this project only, that implements the interface (not that it actually has to,
+            but it does mean that you can more easily keep the type up to date as it changes).
+
+            In the situation where the servicelayer object needs to be shaped different for serialization (a real
+            possibility), then you can change the inner type and use either AutoMapper, or custom code, to map to a
+            different result type for the response.  Which is what we do in the Query method, below. */
+
             var result = (await _myObjectService.GetMyObject(id.AsServiceRequest())).ToApiServiceResponse();
-            HttpStatusCode statusCode = HttpStatusCode.OK;
-            if (!result.Success)
-            {
-                //if there's an exception and/or error message - then it's InternalServerError
-                //if there's neither of those, then it's 404
-                if (result.HasError)
-                    statusCode = HttpStatusCode.InternalServerError;
-                else
-                    statusCode = HttpStatusCode.NotFound;
-            }
-            return Request.CreateResponse(statusCode, result);
+            return Request.CreateResponse(GetStatusCodeForResponse(result), result);
         }
 
         private async Task<HttpResponseMessage> Query(PagedQuery query)
         {
-            var result = (await _myObjectService.QueryMyObjects(query.AsServiceRequest())).ToApiServiceResponse();
-            HttpStatusCode statusCode = HttpStatusCode.OK;
-            if(!result.Success)
-            {
-                if (result.HasError)
-                    statusCode = HttpStatusCode.InternalServerError;
-                else
-                    //not actually sure what status code to use here if a query fails without an error.  Will use NotFound, though.
-                    statusCode = HttpStatusCode.NotFound;
-            }
-            return Request.CreateResponse(statusCode, result);
-        }
+            var innerResponse = (await _myObjectService.QueryMyObjects(query.AsServiceRequest()));
 
-        private Uri ToFullUri(string uriPartial)
-        {
-            //this is not production ready, btw, it's just good enough for this site
-            return new Uri(new Uri(Request.RequestUri.GetLeftPart(UriPartial.Authority)), uriPartial);
+            var resultModel = Mapper.Map < PagedResultModel<MyObjectModel>>(innerResponse.Result);
+
+            if (innerResponse.Success && resultModel != null)
+            {
+                //set next/previous links for restful friendliness
+                if (query.Page > 1 && resultModel.PageCount > 1)
+                    resultModel.PreviousPage = ToFullUri(Url.Route("DefaultApi", new { Page = query.Page - 1, PageSize = query.PageSize }));
+                if (query.Page < resultModel.PageCount) //using 1-based paging
+                    resultModel.NextPage = ToFullUri(Url.Route("DefaultApi", new { Page = query.Page + 1, PageSize = query.PageSize }));
+            }
+
+            var toReturn = innerResponse.ToApiServiceResponse(resultModel);
+            return Request.CreateResponse(GetStatusCodeForResponse(toReturn), toReturn);
         }
 
         /// <summary>
@@ -125,10 +143,10 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
         {
             //Just demonstrating that here you can leverage Web APIs model binding to
             //perform extended validation on the objects that are coming into your API,
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new Models.ApiServiceResponse<int>() 
-                { 
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new Models.ApiServiceResponse<int>()
+                {
                     //clearly the error message would be better as a dictionary of strings.
                     ErrorMessage = string.Join("\n", ModelState.Select(ms => string.Format("{0}: {1}", ms.Key, ms.Value)))
                 });
@@ -137,22 +155,13 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
             var result = (await _myObjectService.InsertMyObject(Mapper.Map<MyObject>(newObject).AsServiceRequest())).ToApiServiceResponse();
 
             //'Created' is the appropriate status code result for a Post (or potentially a Put)
-            HttpStatusCode statusCode = HttpStatusCode.Created;
+            HttpStatusCode statusCode = GetStatusCodeForResponse(result, successCode: HttpStatusCode.Created, unsuccessfulCode: HttpStatusCode.NoContent);
             HttpResponseMessage toReturn = null;
-            //I smell a pattern here, that needs to be refactored....
-            if(!result.Success)
-            {
-                //tricky, this - if not created, but there's no error - then we'll say there's no response because
-                //because if the operation is successful, the client is expecting a response body with an ID
-                if (result.HasError)
-                    statusCode = HttpStatusCode.InternalServerError;
-                else
-                    statusCode = HttpStatusCode.NoContent; 
-            }
-            else
+            if (statusCode == HttpStatusCode.Created)
             {
                 //the correct way to respond to a successful POST, in HTTP, is to return 201 CREATED , and the URI for the object 
-                //in the 'Location' response header, luckily, we have routing to help with that ;)
+                //in the 'Location' response header, luckily, we have routing to help with that - although we should abstract away
+                //the routing behind a component, or method, so we can more easily refactor if we change the route name or whatever.
 
                 //we will also, however, return a content body, because that's what our contract wants.  It's not required, though:
                 //the REST response headers actually give us everything we need to rehydrate our server response on the client.
@@ -164,7 +173,7 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Controllers
                 //a given client appears to process it) - the key issue here being that any request not conforming to the HTTP spec
                 //could be mangled by intermediate proxies etc before they get to the endpoint or back to the client.
                 toReturn = Request.CreateResponse(statusCode, result);
-                
+
                 //stored local here just for debugging
                 var locationUri = ToFullUri(Url.Route("DefaultApi", new { id = result.Result }));
                 //set the location field

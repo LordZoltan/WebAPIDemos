@@ -1,0 +1,46 @@
+﻿@model WebAPIDemos.ServiceLayer.PagedResult<MyObjectModel>
+
+@{
+    
+}
+
+<p>
+    @if (Model.TotalCount == 0)
+    {
+        <text>No objects to display.</text>
+    }
+    else{
+        <text>Displaying </text>@(Model.TotalCount)<text> objects.</text>
+    }
+      @Html.ActionLink("Create a new object", "Create")
+</p>
+
+@if (Model.TotalCount != 0) { 
+<table class="table">
+    <tr>
+        <th>
+           ID
+        </th>
+        <th>
+            Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.PageResults)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+}

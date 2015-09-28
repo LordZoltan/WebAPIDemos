@@ -3,9 +3,26 @@
     ViewBag.Title = "Home Page";
 }
 
+@if (Model.LastOperationResponse != null)
+{
+    <div id="LastResult" class="@(Model.LastOperationResponse.Success ? "errorResponse" : "errorSuccess")">
+        @if (Model.LastOperationResponse.Success)
+        {
+            <p>Operation successful</p>
+        }
+        else
+        {
+            <p>Operation failed</p>
+            if (Model.LastOperationResponse.ErrorMessage != null)
+            {
+                <p>@Model.LastOperationResponse.ErrorMessage</p>
+            }
+        }
+    </div>
+}
+
 <div>
-    @if (Model.MyObject != null)
-    {
-        @Html.DisplayFor(m => m.MyObject.Name)
-    }
+    
+    @Html.DisplayFor(m => m.Results, "PagedResults_MyObjectModel")
+    
 </div>

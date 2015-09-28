@@ -120,7 +120,7 @@ namespace WebAPIDemos.ServiceLayer.Direct
                 {
                     var total = repo.MyEntities.All().Count();
                     //to do - should be doing a bit more validation here...
-                    var page = repo.MyEntities.All().Skip(query.Argument.Page - 1 * query.Argument.PageSize).Take(query.Argument.PageSize).ToArray();
+                    var page = repo.MyEntities.All().Skip((query.Argument.Page - 1) * query.Argument.PageSize).Take(query.Argument.PageSize).ToArray();
                     var result = new PagedResult<MyObject>()
                     {
                         TotalCount = total,

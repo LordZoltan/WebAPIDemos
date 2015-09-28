@@ -17,5 +17,9 @@ namespace WebAPIDemos.ServiceLayer
         {
             return new ApiServiceResponse<T>(response);
         }
+
+        public static ApiServiceResponse<T> ToApiServiceResponse<T>(this IServiceResponse response, T result){
+            return new ApiServiceResponse<T>(response, result);
+        }
     }
 }

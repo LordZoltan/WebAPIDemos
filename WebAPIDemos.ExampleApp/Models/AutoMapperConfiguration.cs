@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebAPIDemos.ServiceLayer;
 
-namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Models
+namespace WebAPIDemos.ExampleApp.Models
 {
     /// <summary>
     /// Automapper configuration for the Models namespace in this project
@@ -16,12 +17,12 @@ namespace WebAPIDemos.ServiceLayer.WebAPI.Server.Models
         /// <param name="mappingConfiguration"></param>
         public static void Configure(AutoMapper.IConfiguration mappingConfiguration)
         {
-            //reversible maps for types that pass out of the API and bback in again.
+            //reversible maps for types that pass out of the API and back in again.
             mappingConfiguration.CreateMap<MyObjectModel, MyObject>().ReverseMap();
 
-            //non-reversible maps for types that are only ever passed out of the API
-            mappingConfiguration.CreateMap(typeof(PagedResult<>), typeof(PagedResultModel<>));
-            
+            //hoping this will work - as we need to map generic paged results of service layer types to 
+            //paged results of our model types.
+            mappingConfiguration.CreateMap(typeof(PagedResult<>), typeof(PagedResult<>));
         }
     }
 }

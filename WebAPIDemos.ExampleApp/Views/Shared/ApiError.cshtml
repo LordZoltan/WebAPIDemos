@@ -1,0 +1,10 @@
+﻿@model WebAPIDemos.ServiceLayer.IServiceResponse
+@{
+    ViewBag.Title = "An error occurred while communicating with the API";
+}
+
+@if (Model != null)
+{
+    @Model.ErrorMessage
+}
+
